@@ -9,3 +9,4 @@ if avg >= 80:
 else:
     print("及格")
 print(f"平均分为{avg}")
+print("今天复习第一天")
