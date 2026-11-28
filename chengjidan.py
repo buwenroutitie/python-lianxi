@@ -1,3 +1,4 @@
+PASS_LINE = 60
 class Student():
     def __init__(self,name,scores):
         self.name = name
@@ -28,7 +29,7 @@ for student in students:
         if other.average() > avg:
             rank = rank + 1
 
-    if avg >= 60:
+    if avg >= PASS_LINE:
         status = "及格"
     else:
         status = "不及格"
@@ -52,7 +53,7 @@ print(f"最低分:{worst.name} {worst.average()}")
 
 pass_count = 0
 for student in students:
-    if student.average() >= 60:
+    if student.average() >= PASS_LINE:
         pass_count = pass_count + 1
 print(f"及格人数:{pass_count}/{len(students)}")
 
