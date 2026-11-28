@@ -1,3 +1,4 @@
+lines = []
 PASS_LINE = 60
 class Student():
     def __init__(self,name,scores):
@@ -20,7 +21,7 @@ with open("students.txt", encoding="utf-8") as f:
             scores.append(int(p))
         students.append(Student(name, scores))
 
-print("姓名\t平均分\t名次\t状态")
+lines.append("姓名\t平均分\t名次\t状态")
 for student in students:
     avg = student.average()
 
@@ -34,12 +35,12 @@ for student in students:
     else:
         status = "不及格"
 
-    print(f"{student.name}\t{avg}\t{rank}\t{status}")
+    lines.append(f"{student.name}\t{avg}\t{rank}\t{status}")
 
 total = 0
 for student in students:
     total = total + student.average()
-print(f"班级平均分:{total/len(students)}")
+lines.append(f"班级平均分:{total/len(students)}")
 
 best = students[0]
 worst = students[0]
@@ -48,14 +49,21 @@ for student in students:
         best = student
     if student.average() < worst.average():
         worst = student
-print(f"最高分:{best.name} {best.average()}")
-print(f"最低分:{worst.name} {worst.average()}")
+lines.append(f"最高分:{best.name} {best.average()}")
+lines.append(f"最低分:{worst.name} {worst.average()}")
 
 pass_count = 0
 for student in students:
     if student.average() >= PASS_LINE:
         pass_count = pass_count + 1
-print(f"及格人数:{pass_count}/{len(students)}")
+lines.append(f"及格人数:{pass_count}/{len(students)}")
 
 rate = pass_count/len(students)*100
-print(f"及格率:{round(rate,1)}%")
+lines.append(f"及格率:{round(rate,1)}%")
+
+for line in lines:
+    print(line)
+
+with open("chengjidan.txt", "w", encoding="utf-8") as f:
+    for line in lines:
+        f.write(line + "\n")
