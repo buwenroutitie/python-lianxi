@@ -9,11 +9,15 @@ class Student():
             total = total + s
         return total/len(self.scores)
 
-students = [
-    Student("张三", [78, 92, 65, 88]),
-    Student("李四", [50, 62, 53]),
-    Student("王五", [90, 93, 96]),
-]
+students = []
+with open("students.txt", encoding="utf-8") as f:
+    for line in f:
+        parts = line.strip().split()
+        name = parts[0]
+        scores = []
+        for p in parts[1:]:
+            scores.append(int(p))
+        students.append(Student(name, scores))
 
 print("姓名\t平均分\t名次\t状态")
 for student in students:
