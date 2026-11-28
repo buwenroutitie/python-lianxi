@@ -1,4 +1,6 @@
 lines = []
+from PIL import Image, ImageDraw, ImageFont
+FONT = "C:/windows/Fonts/msyh.ttc"
 PASS_LINE = 60
 class Student():
     def __init__(self,name,scores):
@@ -35,6 +37,8 @@ for student in students:
     else:
         status = "不及格"
 
+    student.rank = rank
+    student.status = status
     lines.append(f"{student.name}\t{avg}\t{rank}\t{status}")
 
 total = 0
@@ -67,3 +71,45 @@ for line in lines:
 with open("chengjidan.txt", "w", encoding="utf-8") as f:
     for line in lines:
         f.write(line + "\n")
+
+W, H = 640, 480
+img = Image.new("RGB", (W, H), "white")
+draw = ImageDraw.Draw(img)
+
+font_title = ImageFont.truetype(FONT, 32)
+font_body = ImageFont.truetype(FONT, 24)
+
+draw.text((40, 24), "高一（3）班 周测成绩单", font=font_title, fill="black")
+
+draw.text((40, 100), "姓名", font=font_body, fill="black")
+draw.text((160, 100), "平均分", font=font_body, fill="black")
+draw.text((280, 100), "名次", font=font_body, fill="black")
+draw.text((400, 100), "状态", font=font_body, fill="black")
+
+draw.line((40, 140, 600, 140), fill="black", width=2)
+
+y = 170
+for student in students:
+    draw.text((40, y), student.name, font=font_body, fill="black")
+    draw.text((160, y), f"{student.average()}", font=font_body, fill="black")
+    draw.text((280, y), f"{student.rank}", font=font_body, fill="black")
+    draw.text((400, y), student.status, font=font_body, fill="black")
+    y = y + 36
+
+draw.line((40, 276, 600, 276), fill="black", width=2)
+
+stats = [
+    f"班级平均分：{total/len(students)}",
+    f"最高分：{best.name} {best.average()}",
+    f"最低分：{worst.name} {worst.average()}",
+    f"及格人数：{pass_count}/{len(students)}",
+    f"及格率：{round(rate,1)}%",
+]
+
+y = 300
+for stat in stats:
+    draw.text((40, y), stat, font=font_body, fill="black")
+    y = y + 36
+
+img.save("chengjidan.png")
+print("图片已保存：chengjidan.png")
